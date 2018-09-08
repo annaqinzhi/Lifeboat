@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BusyPosition : MonoBehaviour {
+public class BusyPlace : MonoBehaviour {
 
-    public bool busyPosition;
+    public bool busyPlace;
 
 }
