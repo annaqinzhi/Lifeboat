@@ -8,8 +8,9 @@ public class JumperBController : MonoBehaviour
     [HideInInspector]
     public GameManager gameManager;
     public Transform positionsB;
+
+    [HideInInspector]
     public int xPos;
-    public int xJumper;
 
     int currentPosition = 0;
 
@@ -20,6 +21,7 @@ public class JumperBController : MonoBehaviour
     void Start()
     {
         transform.position = positionsB.GetChild(currentPosition).transform.position;
+        Debug.Log("Start currentPosition " + currentPosition);
 
         StartCoroutine(Move());
 
@@ -39,6 +41,8 @@ public class JumperBController : MonoBehaviour
     void MoveToNext()
     {
         currentPosition++;
+        Debug.Log("currentPosition " + currentPosition);
+
         int freePlace = GetFreePlaceInBoat();
 
         if (currentPosition < positionsB.childCount)
@@ -50,42 +54,36 @@ public class JumperBController : MonoBehaviour
         {
             if (gameManager.Saved(gameObject) && freePlace != -1)
             {
-
+                //get the free place in the boat and attach this jumper to the object "BOAT"
                 transform.position = GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
-                    .places[freePlace].transform.position;
-
+                .places[freePlace].transform.position;
 
                 Debug.Log("getFreePlace " + freePlace);
 
                 GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
                           .places[freePlace].GetComponent<BusyPlace>().busyPlace = true;
+                          
+                gameManager.numOfLivesInBoat++;
+
+                gameManager.SavedObjects.Add(gameObject);
+    
+                gameObject.transform.SetParent(GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
+                                              .places[freePlace].transform);
+
 
                 xPos = freePlace;
-                gameManager.SavedObjects.Add(gameObject);
-                gameManager.numOfLivesInBoat++;
 
             }
             else if (!gameManager.Saved(gameObject) || freePlace == -1 )
 
             {
+                gameManager.addMissPoints();
+
                 Debug.Log("Die!");
                 Die();
+
+
             }
-        }
-
-        if (currentPosition > positionsB.childCount)
-        {
-
-            if (transform.position == GameObject.FindWithTag("ShorePoint").transform.position)
-            {
-                Die();
-                Debug.Log("One jumper have left to shorepoint");
-            }
-
-            transform.position = GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
-                .places[xPos].transform.position;
-           
-
         }
 
 

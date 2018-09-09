@@ -8,12 +8,17 @@ public class GameManager : MonoBehaviour {
     public GameObject jumperBPrefab;
     public List<GameObject> SavedObjects = new List<GameObject>();
     public GameObject shorePoint;
+    public ShorePointController shorePointController;
+    public PointsController pointsController;
+    public MissPointsController missPointsController;
 
     public bool continueGame;
     public float spawnDelay = 5.0f;
     public float moveDelay = 0.4f;
     public int numOfJumperB = 0;
     public int numOfLivesInBoat = 0;
+    public int points = 0;
+    public int pointsM = 0;
 
     private void OnEnable()
     {
@@ -36,8 +41,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator JumperBSpawner(){
         while(continueGame){
-            NewJumperB(moveDelay);
-            yield return new WaitForSeconds(spawnDelay);
+            NewJumperB(moveDelay-(0.03f*points));
+            yield return new WaitForSeconds(spawnDelay-(0.2f*points));
         }
     }
 
@@ -79,24 +84,49 @@ public class GameManager : MonoBehaviour {
         {
             Debug.Log("There are  " + numOfLivesInBoat+ "lives in boat!");
 
+
             SavedObjects[numOfLivesInBoat-1].transform.position
                                         =GameObject.FindWithTag("ShorePoint").transform.position;
+            shorePointController.busyPoint = true;
+            Debug.Log("Number"+(numOfLivesInBoat - 1) + " go to shorePoint!");
 
-         
 
-            SavedObjects.RemoveAt(numOfLivesInBoat - 1);
-
-            Debug.Log(numOfLivesInBoat+ "  Lives left in boat! ");
 
             GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
-                      .places[numOfLivesInBoat - 1].GetComponent<BusyPlace>().busyPlace = false;
+                      .places[numOfLivesInBoat-1].GetComponent<BusyPlace>().busyPlace = false;
+            Debug.Log("Place become free! ");
 
-            Debug.Log(" one take off boat!");
 
             numOfLivesInBoat--;
-           
+            Debug.Log(numOfLivesInBoat + "  Lives left in boat! ");
 
+            if (shorePointController.busyPoint==true){
+                Invoke("DestroyOneLife", 0.2f);
+            }
         }
+
+    }
+
+    void DestroyOneLife(){
+
+        Destroy(SavedObjects[numOfLivesInBoat]);
+        Debug.Log("Number"+(numOfLivesInBoat)+" destroy!");
+
+        SavedObjects.RemoveAt(numOfLivesInBoat);
+        Debug.Log("Number"+(numOfLivesInBoat) + " removed från SavedObjects list!");
+
+        addPoints();
+
+    }
+
+    public void addPoints(){
+        points++;
+        pointsController.SetPoint(points);
+    }
+
+    public void addMissPoints(){
+        pointsM++;
+        missPointsController.SetPoint(pointsM);
 
     }
 }
