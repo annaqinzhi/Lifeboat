@@ -6,7 +6,7 @@ public class BoatController : MonoBehaviour
 {
 
     public List<Transform> positions = new List<Transform>();
-    public int currentPosition = 0;
+    public int currentPosition = 1;
     public List<Transform> places = new List<Transform>();
 
 

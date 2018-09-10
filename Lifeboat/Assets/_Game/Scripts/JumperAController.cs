@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumperBController : MonoBehaviour
-{
-
+public class JumperAController : MonoBehaviour {
     [HideInInspector]
     public GameManager gameManager;
-    public Transform positionsB;
+    public Transform positionsA;
 
     [HideInInspector]
     public int xPos;
@@ -20,7 +18,7 @@ public class JumperBController : MonoBehaviour
 
     void Start()
     {
-        transform.position = positionsB.GetChild(currentPosition).transform.position;
+        transform.position = positionsA.GetChild(currentPosition).transform.position;
         Debug.Log("Start currentPosition " + currentPosition);
 
         StartCoroutine(Move());
@@ -41,16 +39,16 @@ public class JumperBController : MonoBehaviour
     void MoveToNext()
     {
         currentPosition++;
-        Debug.Log("currentPosition B " + currentPosition);
+        Debug.Log("currentPosition A " + currentPosition);
 
         int freePlace = GetFreePlaceInBoat();
 
-        if (currentPosition < positionsB.childCount)
+        if (currentPosition < positionsA.childCount)
         {
-            transform.position = positionsB.GetChild(currentPosition).transform.position;
+            transform.position = positionsA.GetChild(currentPosition).transform.position;
         }
 
-        if (currentPosition == positionsB.childCount - 1)
+        if (currentPosition == positionsA.childCount - 1)
         {
             if (gameManager.Saved(gameObject) && freePlace != -1)
             {
@@ -62,11 +60,11 @@ public class JumperBController : MonoBehaviour
 
                 GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
                           .places[freePlace].GetComponent<BusyPlace>().busyPlace = true;
-                          
+
                 gameManager.numOfLivesInBoat++;
 
                 gameManager.SavedObjects.Add(gameObject);
-    
+
                 gameObject.transform.SetParent(GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
                                               .places[freePlace].transform);
 
@@ -79,7 +77,7 @@ public class JumperBController : MonoBehaviour
             {
                 gameManager.addMissPoints();
 
-                Debug.Log("B Die!" + !gameManager.Saved(gameObject) + freePlace);
+                Debug.Log("A Die!"+!gameManager.Saved(gameObject)+freePlace);
                 Die();
 
 
@@ -111,14 +109,5 @@ public class JumperBController : MonoBehaviour
 
     }
 
-  
 
 }
-
-
-
-
-
- 
-
-

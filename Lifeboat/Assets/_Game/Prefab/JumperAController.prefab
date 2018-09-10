@@ -52,6 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4366113335516564}
   - component: {fileID: 212886556080069676}
+  - component: {fileID: 114971457512762712}
   m_Layer: 0
   m_Name: JumperA
   m_TagString: Untagged
@@ -254,6 +255,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dangerPosition: 0
+--- !u!114 &114971457512762712
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1468291084427394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772925246462b4effb87ee063262f383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  positionsA: {fileID: 4116491402415232}
+  xPos: 0
+  moveDelay: 0.1
 --- !u!114 &114995708353640900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -298,10 +314,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1980242009
+  m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c365276c6ca8f4095a024357cd673180, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b5744c3c965d54d8891eda6dc49fc8ac, type: 3}
   m_Color: {r: 0.8962264, g: 0.5565686, b: 0.097232126, a: 1}
   m_FlipX: 0
   m_FlipY: 0

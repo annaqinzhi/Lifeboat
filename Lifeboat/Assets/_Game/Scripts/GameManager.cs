@@ -6,8 +6,10 @@ public class GameManager : MonoBehaviour {
 
     public GameObject boat;
     public GameObject jumperBPrefab;
+    public GameObject jumperAPrefab;
     public List<GameObject> SavedObjects = new List<GameObject>();
     public GameObject shorePoint;
+    public GameOverController gameOverController;
     public ShorePointController shorePointController;
     public PointsController pointsController;
     public MissPointsController missPointsController;
@@ -15,8 +17,10 @@ public class GameManager : MonoBehaviour {
     public bool continueGame;
     public float spawnDelay = 5.0f;
     public float moveDelay = 0.4f;
+    public int numOfJumperA = 0;
     public int numOfJumperB = 0;
     public int numOfLivesInBoat = 0;
+
     public int points = 0;
     public int pointsM = 0;
 
@@ -35,25 +39,52 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
 
-        StartCoroutine(JumperBSpawner());
+        StartCoroutine(JumperASpawner());
+        Invoke("StartB", 1.5f);
+        Invoke("StopGame", 12f);
 
-	}
+    }
 
-    IEnumerator JumperBSpawner(){
+    IEnumerator JumperASpawner(){
         while(continueGame){
-            NewJumperB(moveDelay-(0.03f*points));
-            yield return new WaitForSeconds(spawnDelay-(0.2f*points));
+            NewJumperA(moveDelay-(0.02f*points));
+            yield return new WaitForSeconds(spawnDelay-(0.1f*points));
         }
     }
 
-    void NewJumperB(float delay){
+    void NewJumperA(float delay){
+        numOfJumperA++;
+        GameObject newJumperA = Instantiate(jumperAPrefab);
+        JumperAController jumperAController = newJumperA.GetComponentInChildren<JumperAController>();
+        jumperAController.gameManager = this;
+        jumperAController.moveDelay = delay;
+        Debug.Log("JumperA created " + numOfJumperA);
+       
+
+    }
+
+    void StartB(){
+
+        StartCoroutine(JumperBSpawner());
+    }
+
+    IEnumerator JumperBSpawner()
+    {
+        while (continueGame)
+        {
+            NewJumperB(moveDelay - (0.03f * points));
+            yield return new WaitForSeconds(spawnDelay - (0.3f * points));
+        }
+    }
+
+    void NewJumperB(float delay)
+    {
         numOfJumperB++;
         GameObject newJumperB = Instantiate(jumperBPrefab);
         JumperBController jumperBController = newJumperB.GetComponentInChildren<JumperBController>();
         jumperBController.gameManager = this;
         jumperBController.moveDelay = delay;
-        Debug.Log("Jumper created" + numOfJumperB);
-       
+        Debug.Log("JumperB created " + numOfJumperB);
 
     }
 
@@ -128,6 +159,11 @@ public class GameManager : MonoBehaviour {
         pointsM++;
         missPointsController.SetPoint(pointsM);
 
+    }
+
+    void StopGame(){
+        continueGame = false;
+        gameOverController.SetText();
     }
 }
 
