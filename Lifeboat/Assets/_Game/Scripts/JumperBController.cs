@@ -30,7 +30,7 @@ public class JumperBController : MonoBehaviour
 
     IEnumerator Move()
     {
-        while (true)
+        while (gameManager.continueGame)
         {
             yield return new WaitForSeconds(moveDelay);
             MoveToNext();
@@ -49,6 +49,7 @@ public class JumperBController : MonoBehaviour
         {
             transform.position = positionsB.GetChild(currentPosition).transform.position;
         }
+
 
         if (currentPosition == positionsB.childCount - 1)
         {
@@ -70,22 +71,16 @@ public class JumperBController : MonoBehaviour
                 gameObject.transform.SetParent(GameObject.FindWithTag("BOAT").GetComponent<BoatController>()
                                               .places[freePlace].transform);
 
-
                 xPos = freePlace;
-
             }
             else if (!gameManager.Saved(gameObject) || freePlace == -1)
-
             {
                 gameManager.addMissPoints();
 
                 Debug.Log("B Die!" + !gameManager.Saved(gameObject) + freePlace);
                 Die();
-
-
             }
         }
-
 
     }
 

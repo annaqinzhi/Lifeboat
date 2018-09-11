@@ -28,7 +28,7 @@ public class JumperAController : MonoBehaviour {
 
     IEnumerator Move()
     {
-        while (true)
+        while (gameManager.continueGame)
         {
             yield return new WaitForSeconds(moveDelay);
             MoveToNext();
@@ -84,6 +84,7 @@ public class JumperAController : MonoBehaviour {
 
             }
         }
+
     }
 
     public int GetFreePlaceInBoat()

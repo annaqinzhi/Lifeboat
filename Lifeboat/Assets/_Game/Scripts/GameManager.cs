@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
 
@@ -12,8 +13,11 @@ public class GameManager : MonoBehaviour {
     public CliffPointController cliffPointController;
     public PointsController pointsController;
     public MissPointsController missPointsController;
+    public TextMeshProUGUI textRestart;
 
     public bool continueGame;
+    public bool restart;
+
     public float spawnDelay = 5.0f;
     public float moveDelay = 0.4f;
     public int numOfJumperA = 0;
@@ -33,21 +37,39 @@ public class GameManager : MonoBehaviour {
         InputController.RightClick -= InputController_RightClick;
     }
 
-
-
+    void Update()
+    {
+        if (restart)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+    }
 
     void Start () {
 
+        continueGame = true;
+        restart = false;
+        textRestart.text = "";
+
         StartCoroutine(JumperASpawner());
-        Invoke("StartB", 1.5f);
-        Invoke("StopGame", 36f);
+        Invoke("StartJumperB", 1.5f);
+        Invoke("StopGame", 24f);
 
     }
 
     IEnumerator JumperASpawner(){
+
         while(continueGame){
             NewJumperA(moveDelay-(0.02f*points));
             yield return new WaitForSeconds(spawnDelay-(0.1f*points));
+            if(!continueGame){
+                textRestart.text = "Press 'R' for Restart";
+                restart = true;
+                break;
+            }
         }
     }
 
@@ -58,11 +80,10 @@ public class GameManager : MonoBehaviour {
         jumperAController.gameManager = this;
         jumperAController.moveDelay = delay;
         Debug.Log("JumperA created " + numOfJumperA);
-       
 
     }
 
-    void StartB(){
+    void StartJumperB(){
 
         StartCoroutine(JumperBSpawner());
     }
@@ -73,6 +94,12 @@ public class GameManager : MonoBehaviour {
         {
             NewJumperB(moveDelay - (0.03f * points));
             yield return new WaitForSeconds(spawnDelay - (0.3f * points));
+            if (!continueGame)
+            {
+                textRestart.text = "Press 'R' for Restart";
+                restart = true;
+                break;
+            }
         }
     }
 
@@ -87,6 +114,7 @@ public class GameManager : MonoBehaviour {
 
     }
 
+
     public bool Saved(GameObject jumper){
         LayerMask mask = LayerMask.GetMask("Boat");
         RaycastHit2D hit = Physics2D.Raycast(jumper.transform.position, Vector2.down, Mathf.Infinity, mask);
@@ -96,8 +124,8 @@ public class GameManager : MonoBehaviour {
         } else{
             return false;
         }
-
     }
+
 
     void InputController_RightClick()
     {
@@ -137,6 +165,7 @@ public class GameManager : MonoBehaviour {
 
     }
 
+
     void DestroyOneLife(){
 
         Destroy(SavedObjects[numOfLivesInBoat]);
@@ -149,6 +178,7 @@ public class GameManager : MonoBehaviour {
 
     }
 
+
     public void addPoints(){
         points++;
         pointsController.SetPoint(points);
@@ -159,6 +189,7 @@ public class GameManager : MonoBehaviour {
         missPointsController.SetPoint(pointsM);
 
     }
+
 
     void StopGame(){
         continueGame = false;
