@@ -43,10 +43,12 @@ public class JumperAController : MonoBehaviour {
 
         int freePlace = GetFreePlaceInBoat();
 
+
         if (currentPosition < positionsA.childCount)
         {
             transform.position = positionsA.GetChild(currentPosition).transform.position;
         }
+
 
         if (currentPosition == positionsA.childCount - 1)
         {
@@ -77,14 +79,11 @@ public class JumperAController : MonoBehaviour {
             {
                 gameManager.addMissPoints();
 
-                Debug.Log("A Die!"+!gameManager.Saved(gameObject)+freePlace);
+                Debug.Log("A Die!" + !gameManager.Saved(gameObject) + freePlace);
                 Die();
-
 
             }
         }
-
-
     }
 
     public int GetFreePlaceInBoat()

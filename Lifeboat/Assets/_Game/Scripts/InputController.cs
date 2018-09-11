@@ -16,18 +16,22 @@ public class InputController : MonoBehaviour
     {
 #if UNITY_EDITOR
 
-//for mouse
-        if (Input.GetMouseButtonDown(0)){
+        //for mouse
+        if (Input.GetMouseButtonDown(0))
+        {
 
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             if (LeftClick != null && pos.x < -ClickMargin)
                 LeftClick();
 
-            else if ( RightClick !=null && pos.x > ClickMargin ){
+            else if (RightClick != null && pos.x > ClickMargin)
+            {
                 RightClick();
             }
-                    
-                }
+
+        }
+
+#elif UNITY_IOS
 
         //for touch
         foreach (Touch touch in Input.touches){
@@ -43,9 +47,21 @@ public class InputController : MonoBehaviour
                 }
             }
         }
-
-
 #else
+        //for touch
+        foreach (Touch touch in Input.touches){
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                Vector3 pos = Camera.main.ScreenToWorldPoint(Input.acceleration);
+                if (LeftClick != null & pos.x < -ClickMargin)
+                    LeftClick();
+                else if (RightClick != null && pos.x > ClickMargin)
+                {
+                    RightClick();
+                }
+            }
+        }
 
 
 
