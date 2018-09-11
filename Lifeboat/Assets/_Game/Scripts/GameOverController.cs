@@ -5,11 +5,11 @@ using TMPro;
 
 public class GameOverController : MonoBehaviour {
 
-    public TextMeshPro textMeshOver;
+    public TextMeshProUGUI textMeshOver;
 
     private void Start()
     {
-        textMeshOver = GetComponent<TextMeshPro>();
+        textMeshOver = GetComponent<TextMeshProUGUI>();
         textMeshOver.SetText("");
 
         if (textMeshOver == null)
@@ -20,7 +20,7 @@ public class GameOverController : MonoBehaviour {
 
     public void SetText()
     {
-        textMeshOver.SetText("Game Stopped!");
+        textMeshOver.SetText("Game Over!");
     }
 
 }

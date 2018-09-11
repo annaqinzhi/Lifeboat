@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShorePointController : MonoBehaviour {
+public class CliffPointController : MonoBehaviour {
 
     public bool busyPoint;
 }

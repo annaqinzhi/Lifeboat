@@ -8,9 +8,8 @@ public class GameManager : MonoBehaviour {
     public GameObject jumperBPrefab;
     public GameObject jumperAPrefab;
     public List<GameObject> SavedObjects = new List<GameObject>();
-    public GameObject shorePoint;
     public GameOverController gameOverController;
-    public ShorePointController shorePointController;
+    public CliffPointController cliffPointController;
     public PointsController pointsController;
     public MissPointsController missPointsController;
 
@@ -41,7 +40,7 @@ public class GameManager : MonoBehaviour {
 
         StartCoroutine(JumperASpawner());
         Invoke("StartB", 1.5f);
-        Invoke("StopGame", 12f);
+        Invoke("StopGame", 24f);
 
     }
 
@@ -92,7 +91,7 @@ public class GameManager : MonoBehaviour {
         LayerMask mask = LayerMask.GetMask("Boat");
         RaycastHit2D hit = Physics2D.Raycast(jumper.transform.position, Vector2.down, Mathf.Infinity, mask);
 
-        if(hit.collider!=null){
+        if (hit.collider!=null){
             return true;
         } else{
             return false;
@@ -117,9 +116,9 @@ public class GameManager : MonoBehaviour {
 
 
             SavedObjects[numOfLivesInBoat-1].transform.position
-                                        =GameObject.FindWithTag("ShorePoint").transform.position;
-            shorePointController.busyPoint = true;
-            Debug.Log("Number"+(numOfLivesInBoat - 1) + " go to shorePoint!");
+                                        =GameObject.FindWithTag("CliffPoint").transform.position;
+            cliffPointController.busyPoint = true;
+            Debug.Log("Number"+(numOfLivesInBoat - 1) + " go to CliffPoint!");
 
 
 
@@ -131,7 +130,7 @@ public class GameManager : MonoBehaviour {
             numOfLivesInBoat--;
             Debug.Log(numOfLivesInBoat + "  Lives left in boat! ");
 
-            if (shorePointController.busyPoint==true){
+            if (cliffPointController.busyPoint==true){
                 Invoke("DestroyOneLife", 0.2f);
             }
         }
@@ -164,6 +163,7 @@ public class GameManager : MonoBehaviour {
     void StopGame(){
         continueGame = false;
         gameOverController.SetText();
+        Debug.Log("Game Over!");
     }
 }
 
