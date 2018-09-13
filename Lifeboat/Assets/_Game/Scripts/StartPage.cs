@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class StartPage : MonoBehaviour {
 
-    public Canvas startGame;
+    public Canvas startPage;
     public Button playText;
 
     void Start () {
-        startGame = GetComponent<Canvas>();
+
+        startPage = GetComponent<Canvas>();
         playText = GetComponent<Button>();
 		
 	}
