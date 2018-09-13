@@ -7,6 +7,7 @@ TagManager:
   - BOAT
   - JumperA
   - CliffPoint
+  - RestartButton
   layers:
   - Default
   - TransparentFX
@@ -50,18 +51,18 @@ TagManager:
   - name: Crusie
     uniqueID: 1459207219
     locked: 0
+  - name: CliffPoint
+    uniqueID: 1980242009
+    locked: 0
+  - name: Cliff
+    uniqueID: 3530922613
+    locked: 0
   - name: Jumper
     uniqueID: 2073218359
     locked: 0
   - name: Boat
     uniqueID: 3392698449
     locked: 0
-  - name: FrontLayer
-    uniqueID: 1980242009
-    locked: 0
   - name: Text
     uniqueID: 1048765407
-    locked: 0
-  - name: ShorePoint
-    uniqueID: 3530922613
     locked: 0

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour {
 
@@ -9,14 +12,16 @@ public class GameManager : MonoBehaviour {
     public GameObject jumperBPrefab;
     public GameObject jumperAPrefab;
     public List<GameObject> SavedObjects = new List<GameObject>();
-    public GameOverController gameOverController;
     public CliffPointController cliffPointController;
     public PointsController pointsController;
     public MissPointsController missPointsController;
-    public TextMeshProUGUI textRestart;
+
+    public Canvas gameOver;
+    public Button playText;
+    public Button restartYes;
+    public Button restartNo;
 
     public bool continueGame;
-    public bool restart;
 
     public float spawnDelay = 5.0f;
     public float moveDelay = 0.4f;
@@ -30,6 +35,8 @@ public class GameManager : MonoBehaviour {
     private void OnEnable()
     {
         InputController.RightClick+=InputController_RightClick;
+
+
     }
 
     private void OnDisable()
@@ -37,26 +44,15 @@ public class GameManager : MonoBehaviour {
         InputController.RightClick -= InputController_RightClick;
     }
 
-    void Update()
-    {
-        if (restart)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-            }
-        }
-    }
 
     void Start () {
 
+        gameOver.enabled = false; 
         continueGame = true;
-        restart = false;
-        textRestart.text = "";
-
         StartCoroutine(JumperASpawner());
         Invoke("StartJumperB", 1.5f);
-        Invoke("StopGame", 24f);
+        Invoke("StopGame", 10f);
+
 
     }
 
@@ -66,8 +62,6 @@ public class GameManager : MonoBehaviour {
             NewJumperA(moveDelay-(0.02f*points));
             yield return new WaitForSeconds(spawnDelay-(0.1f*points));
             if(!continueGame){
-                textRestart.text = "Press 'R' for Restart";
-                restart = true;
                 break;
             }
         }
@@ -96,8 +90,6 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForSeconds(spawnDelay - (0.3f * points));
             if (!continueGame)
             {
-                textRestart.text = "Press 'R' for Restart";
-                restart = true;
                 break;
             }
         }
@@ -140,13 +132,14 @@ public class GameManager : MonoBehaviour {
             .positions[2].transform.position && numOfLivesInBoat != 0)
 
         {
-            Debug.Log("There are  " + numOfLivesInBoat+ "lives in boat!");
+            Debug.Log("There are  " + numOfLivesInBoat+ " lives in boat!");
 
 
             SavedObjects[numOfLivesInBoat-1].transform.position
                                         =GameObject.FindWithTag("CliffPoint").transform.position;
+
             cliffPointController.busyPoint = true;
-            Debug.Log("Number"+(numOfLivesInBoat - 1) + " go to CliffPoint!");
+            Debug.Log("Number "+(numOfLivesInBoat - 1) + " go to CliffPoint!");
 
 
 
@@ -190,11 +183,27 @@ public class GameManager : MonoBehaviour {
 
     }
 
-
-    void StopGame(){
+    public void StopGame()
+    {
         continueGame = false;
-        gameOverController.SetText();
+        //startGame.enabled = false;
+        gameOver.enabled = true;
         Debug.Log("Game Over!");
     }
+
+    public void RestartYesPress()
+    {
+        gameOver.enabled = false;
+        SceneManager.LoadScene("Scene");
+        Debug.Log("Restart!");
+    }
+
+    public void RestartNoPress(){
+
+        SceneManager.LoadScene("StartMenu");
+        Debug.Log("No Restart! Go back to homescreen!");
+    }
+
+
 }
 
