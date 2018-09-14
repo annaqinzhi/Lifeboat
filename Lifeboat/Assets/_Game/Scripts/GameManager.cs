@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
         continueGame = true;
         StartCoroutine(JumperASpawner());
         Invoke("StartJumperB", 1.5f);
-        Invoke("StopGame", 10f);
+        Invoke("StopGame", 24f);
 
 
     }
