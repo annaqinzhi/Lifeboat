@@ -9,6 +9,7 @@ public class InputController : MonoBehaviour
     public static event ClickAction LeftClick;
     public static event ClickAction RightClick;
 
+    public GameManager gameManager;
     public float ClickMargin = 1;
 
     // Update is called once per frame
@@ -42,20 +43,23 @@ public class InputController : MonoBehaviour
 #if UNITY_IOS
 
         //for touch
-        for (int i = 0; i < Input.touchCount; i++)
+    if (gameManager.continueGame == true)
         {
-            if (Input.GetTouch(i).phase == TouchPhase.Began)
+            for (int i = 0; i < Input.touchCount; i++)
             {
-                Vector3 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
-                if (LeftClick != null && pos.x < -ClickMargin)
+                if (Input.GetTouch(i).phase == TouchPhase.Began)
                 {
-                    LeftClick();
-                    Debug.Log("LeftTouch in IOS " + pos.x);
-                }
-                else if (RightClick != null && pos.x > ClickMargin)
-                {
-                    RightClick();
-                    Debug.Log("RightTouch in IOS " + pos.x);
+                    Vector3 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
+                    if (LeftClick != null && pos.x < -ClickMargin)
+                    {
+                        LeftClick();
+                        Debug.Log("LeftTouch in IOS " + pos.x);
+                    }
+                    else if (RightClick != null && pos.x > ClickMargin)
+                    {
+                        RightClick();
+                        Debug.Log("RightTouch in IOS " + pos.x);
+                    }
                 }
             }
         }
