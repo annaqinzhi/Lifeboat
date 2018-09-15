@@ -37,9 +37,7 @@ public class BoatController : MonoBehaviour
         {
             currentPosition--;
             transform.position = positions[currentPosition].transform.position;
-            Debug.Log("LeftClicked!");
-
-
+   
         }
 
 
@@ -51,7 +49,6 @@ public class BoatController : MonoBehaviour
             {
                 currentPosition++;
                 transform.position = positions[currentPosition].transform.position;
-                Debug.Log("RightClicked!");
                 
             }
 
